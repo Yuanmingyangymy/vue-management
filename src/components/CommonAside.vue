@@ -98,10 +98,12 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    // 点击菜单，路由处理逻辑
     clickMenu(item) {
       if(this.$route.path !== item.path && !(this.$route.path === '/home' && item.path === '/')) {
         this.$router.push(item.path)
       }
+      this.$store.commit('selectMenu', item)
     },
   },
   computed: {

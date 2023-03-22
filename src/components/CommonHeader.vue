@@ -1,9 +1,11 @@
 <template>
   <div class="header-container">
     <div class="l-content">
-        <el-button icon="el-icon-menu" size="mini" @click="handleMenu"></el-button>
+        <el-button style="margin-right: 20px" icon="el-icon-menu" size="mini" @click="handleMenu"></el-button>
         <!-- 面包屑区域 -->
-        <span class="text">首页</span>
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="item in tags" :key="item.path" :to="{ path: item.path }">{{ item.label }}</el-breadcrumb-item>
+        </el-breadcrumb>
     </div>
     <div class="r-content">
         <el-dropdown>
@@ -20,6 +22,8 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -30,6 +34,12 @@ export default {
         handleMenu() {
             this.$store.commit('collapseMenu')
         }
+    },
+    computed: {
+        // 解构赋值
+        ...mapState({
+            tags: state => state.tab.tabsList
+        })
     }
 }
 </script>
@@ -52,6 +62,24 @@ export default {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+        }
+    }
+    .l-content {
+        display: flex;
+        align-items: center;
+        // vue项目中如果无“div身份”，则需要加个/deep/
+        /deep/.el-breadcrumb__item {
+            .el-breadcrumb__inner {
+                &.is-link {
+                    font-weight: normal;
+                    color: #666;
+                }
+            }
+            &:last-child {
+                .el-breadcrumb__inner {
+                    color: #fff;
+                }
+            }
         }
     }
 
